@@ -1,10 +1,10 @@
-# JerseyFileUploadExample #
+# Providing Multitenancy with Spring Boot #
 
 ## Project ##
 
 This project is an example project for Multi Tenancy with Spring Boot.
 
-## Explanation ##
+### Example ###
 
 We start with inserting customers to the database of Tenant ``TenantOne``:
 
