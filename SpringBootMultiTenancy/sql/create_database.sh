@@ -3,7 +3,6 @@
 # Copyright (c) Philipp Wagner. All rights reserved.
 # Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-
 function ask_yes_or_no() {
     read -p "$1 ([y]es or [N]o): "
     case $(echo $REPLY | tr '[A-Z]' '[a-z]') in
@@ -29,7 +28,7 @@ fi
 
 if [[ "no" == $(ask_yes_or_no "Use Database ($DatabaseName)") ]]
 then
-	read -p "Enter Database: " ServerName
+	read -p "Enter Database: " DatabaseName
 fi
 
 if [[ "no" == $(ask_yes_or_no "Use User ($UserName)") ]]
@@ -44,12 +43,3 @@ psql -h $HostName -p $PortNumber -d $DatabaseName -U $UserName < 01_Schemas/sche
 
 # Tables
 psql -h $HostName -p $PortNumber -d $DatabaseName -U $UserName < 02_Tables/tables_sample.sql -L $LOGFILE 1>>$STDOUT 2>>$STDERR
-
-# Keys
-psql -h $HostName -p $PortNumber -d $DatabaseName -U $UserName < 03_Keys/keys_sample.sql -L $LOGFILE 1>>$STDOUT 2>>$STDERR
-
-# Security
-psql -h $HostName -p $PortNumber -d $DatabaseName -U $UserName < 05_Security/security_sample.sql -L $LOGFILE 1>>$STDOUT 2>>$STDERR
-
-# Data
-psql -h $HostName -p $PortNumber -d $DatabaseName -U $UserName < 06_Data/data_sample_stations.sql -L $LOGFILE 1>>$STDOUT 2>>$STDERR
