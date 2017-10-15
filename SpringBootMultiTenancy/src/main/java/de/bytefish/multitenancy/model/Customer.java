@@ -4,7 +4,6 @@
 package de.bytefish.multitenancy.model;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(schema = "sample", name = "customer")

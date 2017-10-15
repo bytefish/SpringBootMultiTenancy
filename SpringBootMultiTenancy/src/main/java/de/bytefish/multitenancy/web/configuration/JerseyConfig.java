@@ -23,11 +23,11 @@ public class JerseyConfig extends ResourceConfig {
         // Register the Resources:
         register(CustomerResource.class);
 
-        // Disable WADL Generation:
-        property("jersey.config.server.wadl.disableWadl", true);
+        // Uncomment to disable WADL Generation:
+        //property("jersey.config.server.wadl.disableWadl", true);
 
-        // Add some Tracing:
-        property("jersey.config.server.tracing.type", "ALL");
-        property("jersey.config.server.tracing.threshold", "TRACE");
+        // Uncomment to add Request Tracing:
+        //property("jersey.config.server.tracing.type", "ALL");
+        //property("jersey.config.server.tracing.threshold", "TRACE");
     }
 }
