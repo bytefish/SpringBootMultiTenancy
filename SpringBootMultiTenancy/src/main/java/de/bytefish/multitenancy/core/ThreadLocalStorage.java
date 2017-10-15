@@ -15,6 +15,5 @@ public class ThreadLocalStorage {
         return tenant.get();
     }
 
-
 }
 
