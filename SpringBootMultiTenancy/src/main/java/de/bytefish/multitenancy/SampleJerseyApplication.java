@@ -1,12 +1,14 @@
 package de.bytefish.multitenancy;
 
 import com.zaxxer.hikari.HikariDataSource;
+import de.bytefish.multitenancy.routing.DynamicTenantAwareRoutingSource;
 import de.bytefish.multitenancy.routing.TenantAwareRoutingSource;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
@@ -15,6 +17,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @SpringBootApplication
+@EnableScheduling
 @EnableTransactionManagement
 public class SampleJerseyApplication extends SpringBootServletInitializer {
 
@@ -24,7 +27,6 @@ public class SampleJerseyApplication extends SpringBootServletInitializer {
 				.properties(getDefaultProperties())
 				.run(args);
 	}
-
 
 	@Bean
 	public DataSource dataSource() {
@@ -42,6 +44,11 @@ public class SampleJerseyApplication extends SpringBootServletInitializer {
 
 		return dataSource;
 	}
+//
+//	@Bean
+//	public DataSource dataSource() {
+//		return new DynamicTenantAwareRoutingSource("D:\\tenants.json");
+//	}
 
 	public DataSource tenantOne() {
 
