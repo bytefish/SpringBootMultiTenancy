@@ -13,16 +13,15 @@ import org.springframework.scheduling.annotation.Scheduled;
 import javax.sql.DataSource;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.concurrent.ConcurrentMap;
 import java.util.stream.Collectors;
 
 public class DynamicTenantAwareRoutingSource extends AbstractRoutingDataSource {
 
     private final String filename;
     private final ObjectMapper objectMapper;
-    private final Map<String, HikariDataSource> tenants;
+    private final ConcurrentMap<String, HikariDataSource> tenants;
 
     public DynamicTenantAwareRoutingSource(String filename) {
         this(filename, new ObjectMapper());
@@ -52,7 +51,7 @@ public class DynamicTenantAwareRoutingSource extends AbstractRoutingDataSource {
         return ThreadLocalStorage.getTenantName();
     }
 
-    private Map<String, HikariDataSource> getDataSources() {
+    private ConcurrentMap<String, HikariDataSource> getDataSources() {
 
         // Deserialize the JSON:
         DatabaseConfiguration[] configurations = getDatabaseConfigurations();
@@ -60,7 +59,7 @@ public class DynamicTenantAwareRoutingSource extends AbstractRoutingDataSource {
         // Now create a Lookup Table:
         return Arrays
                 .stream(configurations)
-                .collect(Collectors.toMap(x -> x.getTenant(), x -> buildDataSource(x)));
+                .collect(Collectors.toConcurrentMap(x -> x.getTenant(), x -> buildDataSource(x)));
     }
 
     private DatabaseConfiguration[] getDatabaseConfigurations() {
@@ -85,10 +84,14 @@ public class DynamicTenantAwareRoutingSource extends AbstractRoutingDataSource {
     }
 
     @Scheduled(fixedDelay = 5000L)
-    public void insertOrUpdateDataSources() {
-
+    public void refreshDataSources() {
         DatabaseConfiguration[] configurations = getDatabaseConfigurations();
 
+        removeObsoleteTenants(configurations);
+        insertOrUpdateTenants(configurations);
+    }
+
+    private void insertOrUpdateTenants(DatabaseConfiguration[] configurations) {
         for (DatabaseConfiguration configuration : configurations) {
             if (tenants.containsKey(configuration.getTenant())) {
                 HikariDataSource dataSource = tenants.get(configuration.getTenant());
@@ -101,6 +104,29 @@ public class DynamicTenantAwareRoutingSource extends AbstractRoutingDataSource {
                 }
             } else {
                 tenants.put(configuration.getTenant(), buildDataSource(configuration));
+            }
+        }
+    }
+    private void removeObsoleteTenants(DatabaseConfiguration[] configurations) {
+
+        // Are there Tenants, that have been removed:
+        Set<String> tenantNamesFromConfiguration = Arrays.stream(configurations)
+                .map(x -> x.getTenant())
+                .collect(Collectors.toSet());
+
+        for (String tenant : tenants.keySet()) {
+
+            // There is currently a Tenant, which is not listed anymore:
+            if(!tenantNamesFromConfiguration.contains(tenant)) {
+
+                // So get the DataSource first ...
+                HikariDataSource dataSource = tenants.get(tenant);
+
+                // ... close all existing connections:
+                dataSource.close();
+
+                // ... and remove it:
+                tenants.remove(tenant);
             }
         }
     }

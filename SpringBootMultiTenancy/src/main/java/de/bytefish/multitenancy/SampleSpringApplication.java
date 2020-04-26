@@ -22,11 +22,11 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableScheduling
 @EnableTransactionManagement
-public class SampleJerseyApplication extends SpringBootServletInitializer {
+public class SampleSpringApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
-		new SampleJerseyApplication()
-				.configure(new SpringApplicationBuilder(SampleJerseyApplication.class))
+		new SampleSpringApplication()
+				.configure(new SpringApplicationBuilder(SampleSpringApplication.class))
 				.properties(getDefaultProperties())
 				.run(args);
 	}
@@ -39,7 +39,7 @@ public class SampleJerseyApplication extends SpringBootServletInitializer {
 		Map<Object,Object> targetDataSources = new HashMap<>();
 
 		targetDataSources.put("TenantOne", tenantOne());
-		targetDataSources.put("TenantTwo", tenantTwo());
+		//targetDataSources.put("TenantTwo", tenantTwo());
 
 		dataSource.setTargetDataSources(targetDataSources);
 
