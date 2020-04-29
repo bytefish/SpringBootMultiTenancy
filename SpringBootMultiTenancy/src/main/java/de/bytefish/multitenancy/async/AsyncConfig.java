@@ -1,5 +1,7 @@
-package de.bytefish.multitenancy.async;
+// Copyright (c) Philipp Wagner. All rights reserved.
+// Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
+package de.bytefish.multitenancy.async;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurerSupport;
