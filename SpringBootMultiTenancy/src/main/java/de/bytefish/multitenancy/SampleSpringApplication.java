@@ -11,6 +11,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 
 @SpringBootApplication
+@EnableAsync
 @EnableScheduling
 @EnableTransactionManagement
 public class SampleSpringApplication extends SpringBootServletInitializer {
@@ -39,7 +41,7 @@ public class SampleSpringApplication extends SpringBootServletInitializer {
 		Map<Object,Object> targetDataSources = new HashMap<>();
 
 		targetDataSources.put("TenantOne", tenantOne());
-		//targetDataSources.put("TenantTwo", tenantTwo());
+		targetDataSources.put("TenantTwo", tenantTwo());
 
 		dataSource.setTargetDataSources(targetDataSources);
 

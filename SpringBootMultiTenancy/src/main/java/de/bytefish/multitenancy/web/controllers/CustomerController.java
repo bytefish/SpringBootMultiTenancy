@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -38,6 +40,16 @@ public class CustomerController {
 
         // Return the DTO:
         return Converters.convert(customer);
+    }
+
+    @GetMapping("/async/customers")
+    public List<CustomerDto> getAllAsync() throws ExecutionException, InterruptedException {
+        CompletableFuture<List<Customer>> customers = repository.findAllAsync();
+
+        // Return the DTO List:
+        return StreamSupport.stream(customers.get().spliterator(), false)
+                .map(Converters::convert)
+                .collect(Collectors.toList());
     }
 
     @PostMapping("/customers")
