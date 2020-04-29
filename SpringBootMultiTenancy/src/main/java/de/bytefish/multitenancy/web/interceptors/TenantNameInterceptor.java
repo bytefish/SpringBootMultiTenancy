@@ -15,10 +15,11 @@ public class TenantNameInterceptor extends HandlerInterceptorAdapter {
 
         String tenantName = request.getHeader("X-TenantID");
 
-        if(tenantName != null) {
-            ThreadLocalStorage.setTenantName(tenantName);
-        }
+        // Always set the Tenant Name, so we avoid leaking Tenants
+        // between Threads in case, no Tenant is given:
+        ThreadLocalStorage.setTenantName(tenantName);
 
         return true;
     }
+
 }
