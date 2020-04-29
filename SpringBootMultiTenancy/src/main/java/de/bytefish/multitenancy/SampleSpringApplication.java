@@ -4,11 +4,10 @@
 package de.bytefish.multitenancy;
 
 import com.zaxxer.hikari.HikariDataSource;
-import de.bytefish.multitenancy.routing.DynamicTenantAwareRoutingSource;
 import de.bytefish.multitenancy.routing.TenantAwareRoutingSource;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
 import org.springframework.scheduling.annotation.EnableAsync;

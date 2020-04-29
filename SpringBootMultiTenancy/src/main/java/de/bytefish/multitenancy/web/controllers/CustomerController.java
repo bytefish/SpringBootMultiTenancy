@@ -37,7 +37,9 @@ public class CustomerController {
 
     @GetMapping("/customers/{id}")
     public CustomerDto get(@PathVariable("id") long id) {
-        Customer customer = repository.findOne(id);
+        Customer customer = repository
+                .findById(id)
+                .orElse(null);
 
         return Converters.convert(customer);
     }
@@ -63,7 +65,7 @@ public class CustomerController {
 
     @DeleteMapping("/customers/{id}")
     public void delete(@PathVariable("id") long id) {
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
 }
