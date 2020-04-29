@@ -5,6 +5,7 @@ package de.bytefish.multitenancy;
 
 import com.zaxxer.hikari.HikariDataSource;
 import de.bytefish.multitenancy.routing.TenantAwareRoutingSource;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -23,13 +24,10 @@ import java.util.Properties;
 @EnableAsync
 @EnableScheduling
 @EnableTransactionManagement
-public class SampleSpringApplication extends SpringBootServletInitializer {
+public class SampleSpringApplication {
 
 	public static void main(String[] args) {
-		new SampleSpringApplication()
-				.configure(new SpringApplicationBuilder(SampleSpringApplication.class))
-				.properties(getDefaultProperties())
-				.run(args);
+		SpringApplication.run(SampleSpringApplication.class, args);
 	}
 
 	@Bean
@@ -81,23 +79,4 @@ public class SampleSpringApplication extends SpringBootServletInitializer {
 
 		return dataSource;
 	}
-
-	private static Properties getDefaultProperties() {
-
-		Properties defaultProperties = new Properties();
-
-		// Set sane Spring Hibernate properties:
-		defaultProperties.put("spring.jpa.show-sql", "true");
-		defaultProperties.put("spring.jpa.hibernate.naming.physical-strategy", "org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl");
-		defaultProperties.put("spring.datasource.initialize", "false");
-
-		// Prevent JPA from trying to Auto Detect the Database:
-		defaultProperties.put("spring.jpa.database", "postgresql");
-
-		// Prevent Hibernate from Automatic Changes to the DDL Schema:
-		defaultProperties.put("spring.jpa.hibernate.ddl-auto", "none");
-
-		return defaultProperties;
-	}
-
 }
