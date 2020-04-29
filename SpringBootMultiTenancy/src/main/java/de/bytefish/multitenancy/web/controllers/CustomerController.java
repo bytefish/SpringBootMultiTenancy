@@ -43,9 +43,10 @@ public class CustomerController {
     }
 
     @GetMapping("/async/customers")
-    public CompletableFuture<List<CustomerDto>> getAllAsync() throws ExecutionException, InterruptedException {
+    public List<CustomerDto> getAllAsync() throws ExecutionException, InterruptedException {
         return repository.findAllAsync()
-                .thenApply(x -> Converters.convert(x));
+                .thenApply(x -> Converters.convert(x))
+                .get();
     }
 
     @PostMapping("/customers")
