@@ -32,10 +32,9 @@ public class Converters {
         return new Customer(source.getId(), source.getFirstName(), source.getLastName());
     }
 
-    public static List<CustomerDto> convert(List<Customer> customers) {
+    public static List<CustomerDto> convert(Iterable<Customer> customers) {
         return StreamSupport.stream(customers.spliterator(), false)
                 .map(Converters::convert)
                 .collect(Collectors.toList());
     }
-
 }

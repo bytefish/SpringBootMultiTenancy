@@ -30,9 +30,7 @@ public class CustomerController {
     public List<CustomerDto> getAll() {
         Iterable<Customer> customers = repository.findAll();
 
-        return StreamSupport.stream(customers.spliterator(), false)
-                .map(Converters::convert)
-                .collect(Collectors.toList());
+        return Converters.convert(customers);
     }
 
     @GetMapping("/customers/{id}")
