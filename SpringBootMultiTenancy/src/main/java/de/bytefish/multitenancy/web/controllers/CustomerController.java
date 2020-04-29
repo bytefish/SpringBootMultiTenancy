@@ -28,8 +28,9 @@ public class CustomerController {
 
     @GetMapping("/customers")
     public List<CustomerDto> getAll() {
-        // Return the DTO List:
-        return StreamSupport.stream(repository.findAll().spliterator(), false)
+        Iterable<Customer> customers = repository.findAll();
+
+        return StreamSupport.stream(customers.spliterator(), false)
                 .map(Converters::convert)
                 .collect(Collectors.toList());
     }
@@ -38,18 +39,13 @@ public class CustomerController {
     public CustomerDto get(@PathVariable("id") long id) {
         Customer customer = repository.findOne(id);
 
-        // Return the DTO:
         return Converters.convert(customer);
     }
 
     @GetMapping("/async/customers")
-    public List<CustomerDto> getAllAsync() throws ExecutionException, InterruptedException {
-        CompletableFuture<List<Customer>> customers = repository.findAllAsync();
-
-        // Return the DTO List:
-        return StreamSupport.stream(customers.get().spliterator(), false)
-                .map(Converters::convert)
-                .collect(Collectors.toList());
+    public CompletableFuture<List<CustomerDto>> getAllAsync() throws ExecutionException, InterruptedException {
+        return repository.findAllAsync()
+                .thenApply(x -> Converters.convert(x));
     }
 
     @PostMapping("/customers")
