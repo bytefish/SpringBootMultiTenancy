@@ -6,6 +6,11 @@ This project is an example project for Multi Tenancy with Spring Boot:
 
 * https://bytefish.de/blog/spring_boot_multitenancy/
 
+## Additional Reading ##
+
+I highly recommend reading the great writeup by [Björn Beskow](https://github.com/beskow) on Multitenant Architectures with Spring Boot:
+
+*  https://callistaenterprise.se/blogg/teknik/2020/09/19/multi-tenancy-with-spring-boot-part1/
 
 ### Example ###
 
