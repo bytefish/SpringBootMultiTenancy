@@ -6,6 +6,10 @@ This project is an example project for Multi Tenancy with Spring Boot:
 
 * https://bytefish.de/blog/spring_boot_multitenancy/
 
+A Spring Boot WebFlux implementation can be found at:
+
+* [https://www.bytefish.de/blog/spring_boot_multitenancy_webflux.html](https://www.bytefish.de/blog/spring_boot_multitenancy_webflux.html)
+
 ## Additional Reading ##
 
 I highly recommend reading the great writeup by [Björn Beskow (@beskow)](https://github.com/beskow) on Multitenant Architectures with Spring Boot:
